@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+  <meta charset="utf-8">
+
+  <title>My Bmob App</title>
+  <meta name="description" content="My Bmob App">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <script type="text/javascript" src="jquery.min.js"></script>
+  <script type="text/javascript" src="bmob.js"></script>
+  <script type="text/javascript" src="angular.min.js"></script>
+</head>
+
+<body ng-controller="appController">
+  
+  <div id="main">
+  <p><h1>API 记录本</h1>          <button ng-click="apiAdd();">新增api</button></p>
+  <div ng-show="showPage">
+      <p><span>api名称</span> <input type="text" ng-model="api.apiName" /></p>
+      <p><span>api备注</span> <textarea rows="5" ng-model="api.apiValue" style="width:65%"></textarea></p>
+      <button ng-click="apiSave();">保存</button>
+
+  </div>
+    <br>
+
+    <p><input type="text" ng-model="search" id="search" /> <button>搜索</button></p>
+    
+    <table>
+      <tr ng-repeat="obj in apis">
+        <td>{{obj.apiName}}</td>
+        <td>{{obj.apiValue}}</td>
+      </tr>
+    </table>
+
+    <br>
+
+
+    
+  </div>
+
+<script type="text/javascript">
+
+  var app = angular.module('myApp', []);
+  app.controller('appController', function($scope, $timeout, $http) {
+    // init bmob
+    Bmob.initialize("218b83e164bae9cb45bc23add4af8f79", "6cf51eef866ebce97d528ffef6e506fc");
+    var TestObject = Bmob.Object.extend("api-note");
+
+    // init save object
+    $scope.api = {
+      apiName:"",
+      apiValue:""
+    };
+
+    safeApply = function( scope, fn) {
+        var phase = scope.$root.$$phase;
+        if(phase == '$apply' || phase == '$digest') {
+            if(fn && (typeof(fn) === 'function')) { fn();
+            }
+        } else {
+            scope.$apply(fn);
+        }
+    };
+    
+    $scope.apis = [];
+    safeApply( $scope, function(){
+        var query = new Bmob.Query(TestObject);
+        
+        // 查询所有数据
+        query.find({
+          success: function(results) {
+              for (var i = 0; i < results.length; i++) {
+                var object = results[i];
+                $scope.api.apiName=object.get('apiName');
+                $scope.api.apiValue=object.get('apiValue');
+                $scope.apis.push($scope.api);
+             }
+          },
+          error: function(error) {
+            alert("查询失败: " + error.code + " " + error.message);
+          }
+        });
+    });
+
+    // get all data
+    $scope.queryAll = function(){
+      var query = new Bmob.Query(TestObject);
+      $scope.apis = [{apiName:"1",apiValue:"1"},{apiName:"2",apiValue:"2"}];
+      // 查询所有数据
+      query.find({
+        success: function(results) {
+            for (var i = 0; i < results.length; i++) {
+              var object = results[i];
+              $scope.api.apiName=object.get('apiName');
+              $scope.api.apiValue=object.get('apiValue');
+              $scope.apis.push($scope.api);
+           }
+        },
+        error: function(error) {
+          alert("查询失败: " + error.code + " " + error.message);
+        }
+      });
+    };
+
+    // init div show or hide
+    $scope.showPage=false;
+
+    // show add api page
+    $scope.apiAdd = function(){
+      $scope.showPage=true;
+      $scope.apis;
+    }
+
+    // show add api page
+    $scope.apiSave = function(){
+      var apiObject = new TestObject();
+      console.log($scope.api);
+      apiObject.save($scope.api, {
+        success: function(object) {
+          alert("保存成功");
+        },
+        error: function(model, error) {
+          alert("保存失败");
+        }
+      }); 
+      $scope.showPage=false;
+    }
+
+  });
+
+
+	
+	/*
+	//获取一行数据
+	var GameScore = Bmob.Object.extend("GameScore");
+    var query = new Bmob.Query(GameScore);
+    query.get("4edc3f6ee9", {
+      success: function(object) {
+        // The object was retrieved successfully.
+        alert(object.get("score"));
+      },
+      error: function(object, error) {
+        alert("query object fail");
+      }
+    });
+	*/
+	
+	/*
+	//修改一行数据
+	var GameScore = Bmob.Object.extend("GameScore");
+    var query = new Bmob.Query(GameScore);
+    query.get("4edc3f6ee9", {
+      success: function(object) {
+        // The object was retrieved successfully.
+        object.set("score", 1338);
+        object.save(null, {
+          success: function(objectUpdate) {
+            alert("create object success, object score:"+objectUpdate.get("score"));
+          },
+          error: function(model, error) {
+            alert("create object fail");
+          }
+        });
+      },
+      error: function(object, error) {
+        alert("query object fail");
+      }
+    });
+	*/
+
+	/*	
+	//删除一行数据
+	var GameScore = Bmob.Object.extend("GameScore");
+    var query = new Bmob.Query(GameScore);
+    query.get("4edc3f6ee9", {
+      success: function(object) {
+        // The object was retrieved successfully.
+        object.destroy({
+          success: function(deleteObject) {
+          alert("delete success");
+          },
+          error: function(GameScoretest, error) {
+          alert("delete fail");
+          }
+        });
+      },
+      error: function(object, error) {
+        alert("query object fail");
+      }
+    });
+	*/
+
+	
+  </script>
+</body>
+
+</html>
