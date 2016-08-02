@@ -1,6 +1,6 @@
 {
-  "name": "spectacle-boilerplate",
-  "version": "1.0.1",
+  "name": "apiNote",
+  "version": "0.0.1",
   "description": "ReactJS Powered Presentation Framework",
   "main": "lib/index.js",
   "scripts": {
