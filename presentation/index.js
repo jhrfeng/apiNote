@@ -1,18 +1,6 @@
 import React from "react";
 
 import {
-  HelloWorld,
-  Fit,
-  CheckLink,
-  Propent1,
-  SaveButton,
-  CommentList,
-  Counter,
-  CountryDropDown,
-  MyForm,
-  Test1,
-  Radio,
-  RadioForm,
   AddNote,
   NoteApi,
   NoteContent,
