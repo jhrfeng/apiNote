@@ -15,12 +15,12 @@ export default class Presentation extends React.Component {
           <Title />
           <Search />
           <br />
-          <AddNote />
-          <br />
           <div className="row">
             <NoteApi />
             <NoteContent />
           </div>
+          <br />
+          <AddNote />
       </div>
     );
   }

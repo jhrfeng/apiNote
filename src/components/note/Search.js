@@ -6,7 +6,6 @@ class Search extends Component  {
 			<div className="row">
 	        <div className="col-sm-12 col-md-12">
 	          <div className="input-group">
-	            <span className="input-group-addon">新增</span>
 	            <input type="text" className="form-control" placeholder="请输入搜索内容" />
 	            <span className="input-group-addon" >搜索</span>
 	          </div>
