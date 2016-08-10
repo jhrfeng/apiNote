@@ -17,22 +17,14 @@ class AddNote extends Component {
 			估不用react自己的value数据绑定 123456
 		 */
 		var formData = {
-			apiType: ReactDOM.findDOMNode(this.refs.apiType).value,
-			apiKey: ReactDOM.findDOMNode(this.refs.apiName).value,
-			apiName: ReactDOM.findDOMNode(this.refs.apiKey).value,
-			apiValue: ReactDOM.findDOMNode(this.refs.apiValue).value
+			"apiType": ReactDOM.findDOMNode(this.refs.apiType).value,
+			"apiKey": ReactDOM.findDOMNode(this.refs.apiKey).value,
+			"apiName": ReactDOM.findDOMNode(this.refs.apiName).value,
+			"apiValue": ReactDOM.findDOMNode(this.refs.apiValue).value
 		};
-
-		axios.get('http://127.0.0.1:5984/_uuids')
+		axios.post('http://127.0.0.1:3000/service/saveNoteApi', formData)
 		  .then( response => {
-		    axios.put('http://127.0.0.1:5984/apinote/'+response.data.uuids[0], 
-		    	formData )
-		    .then(response => {
-		    	//this.setState({show: "none"});
-		    })
-		    .catch(response => {
-		    	console.log(error);
-		    });
+			console.log(response);
 		  })
 		  .catch(response => {
 		    console.log(error);
@@ -58,17 +50,17 @@ class AddNote extends Component {
 	          <br />
 	          <div className="input-group">
 	            <span className="input-group-addon">笔记名称</span>
-	            <input type="text" className="form-control" ref="apiKey" />
+	            <input type="text" className="form-control" ref="apiName" />
 	          </div>
 	          <br />
 	          <div className="input-group">
 	            <span className="input-group-addon" >关键词组</span>
-	            <input type="text" className="form-control" ref="apiValue" />
+	            <input type="text" className="form-control" ref="apiKey" />
 	          </div>
 	          <br />
 	          <div className="input-group">
 	            <span className="input-group-addon" >笔记内容</span>
-	            <input type="text" className="form-control"  ref="apiName" />
+	            <input type="text" className="form-control"  ref="apiValue" />
 	          </div>
 	          <br />
 	          <button type="submit" className="btn btn-default" >保存</button>
